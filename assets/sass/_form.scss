@@ -1,0 +1,288 @@
+/*= ROYALL FORM FRAMEWORK
+	= CREATED BY: KHOA NGUYEN 2013
+==============================================*/
+
+//////////////////////////////////////////////////////
+// Set your form properties below
+//////////////////////////////////////////////////////
+
+
+/*= SETTINGS
+==============================================*/
+
+/*= breakpoints
+==============================================*/
+$form-mq-h-desktop:75em !default;
+
+$form-mq-h-tablet-wide:64em !default;
+
+$form-mq-h-tablet:48em !default;
+
+$form-mq-h-mobile:30em !default;
+
+
+/* set input borders
+==================================*/
+$form-border-radius:4px !default;
+
+
+/* set label styling
+==================================*/
+$form-label-display:inline-block !default;
+
+$form-label-color:#666 !default;
+
+
+/* set input styles
+==================================*/
+$form-input-width:65% !default;
+
+$form-input-color:black !default;
+
+$form-input-bg:#eee !default;
+
+$form-input-bg-hover:#ccc !default;
+
+$form-input-hover-text:#333 !default;
+
+$form-input-border-width:2px !default;
+
+$form-input-border-style:solid !default;
+
+$form-input-border-color:#ccc !default;
+
+$form-animation: false;
+$form-animation-desc:all 0.5s ease-in-out;
+
+/*= Do not touch the 'FORM CORE'!
+All updates should be done in the settings above
+or in your layout css. -KN 2013
+==============================================*/
+
+
+
+/*= FORM CORE
+==============================================*/
+
+//=  MIN AND MAX MEDIA QUERIES MIXIN
+////////////////////////////////////////
+
+@mixin form-maxq($width:'demension'){
+	@media (max-width:$width){
+		@content;
+	}
+}
+
+// = RESPONSIVE IMAGES
+///////////////////////////////////////
+@mixin responsiveImage($filename, $ext:"png", $size:"empty", $svg-fallback:"png"){
+	background-image: image-url('#{$filename}.#{$ext}');
+ 
+	//for IE 8 and below
+ 
+	@if($ext == "svg"){
+		.oldie &{
+			background-image: image-url('#{$filename}.#{$svg-fallback}');
+		}
+	}@else{
+	// if not svg, show regular media query
+ 
+      @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2),(min-resolution: 192dpi),(min-resolution: 2dppx) { 
+			background-image:image-url("#{$filename}@2x.#{$ext}");
+			@if $size =="empty"{
+				background-size: image-width($filename + "." + $ext) image-height($filename + "." + $ext);
+				}
+			@else{
+				background-size:$size;
+				}
+			}	
+	}
+}
+
+
+
+/*= GENERAL
+==============================================*/
+* {
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+*, *:focus{
+	outline:none;
+}
+.question{
+	margin: 0 0 .7em;
+}
+/*= LABELS
+==============================================*/
+
+label,.desc{
+	width:30%;
+	display:$form-label-display;
+	@if $form-label-display == "block"{
+		padding-bottom:5px;
+	}
+	color:$form-label-color;
+	@include form-maxq($form-mq-h-tablet-wide){
+		display:block;
+		width:100%;
+	}
+}
+/*= INPUT
+==============================================*/
+
+input[type=text], input[type=password], input[type=tel],select,textarea{
+	width:$form-input-width;
+	border:1px solid #ddd;
+	padding:10px 5px;
+	color:$form-input-color;
+	border:$form-input-border-width $form-input-border-style $form-input-border-color;
+	font-size:1rem;
+	background:$form-input-bg;
+	@include border-radius($form-border-radius);
+	@include form-maxq($form-mq-h-tablet-wide){
+		width:100%;
+	}
+	@if $form-animation == true{
+		@include transition(#{$form-animation-desc});
+	}
+	&:hover, &:focus{
+		background:$form-input-bg-hover;
+		color:$form-input-hover-text;
+	}
+}
+/*= PHONE
+==============================================*/
+
+.telephone{
+	display:inline-block;
+	@include form-maxq($form-mq-h-mobile){
+		display:block;
+	}
+	input[type=text], input[type=tel]{
+		width:auto;
+		margin-right:.3em;
+		display:inline-block;
+		@include form-maxq($form-mq-h-mobile){
+			display:block;
+			width:100%;
+			margin:0 0 .5em;
+		}
+	}
+}
+
+/*= SELECTS
+==============================================*/
+
+select, select:hover{
+	-webkit-appearance:none;
+	-moz-appearance:none;
+	text-indent:0.01px;
+	text-overflow:'';
+	position:relative;
+	@include border-radius($form-border-radius);
+	@include responsiveImage(arrow-down,svg);
+	background-repeat:no-repeat;
+	background-position:98% center;
+	padding-right:25px;
+	.oldie &{
+		background-image:none;
+		padding-right:10px;
+	}
+}
+
+/*= BIRTH DATE
+==============================================*/
+.type_date{
+	.mmddyyyy{
+		display:inline-block;
+		@include form-maxq($form-mq-h-mobile){
+			display:block;
+		}
+		span{
+			display:inline-block;
+			@include form-maxq($form-mq-h-mobile){
+				display:block;
+			}
+			margin-right:.2em;
+			select{
+				width:auto;
+				background-position:92% 50%;
+				@include form-maxq($form-mq-h-mobile){
+					display:block;
+					width:100%;
+					margin:0 0 .5em;
+				}
+			}
+		}
+	}
+}
+/*= RADIOS
+==============================================*/
+.type_radio{
+	& > .desc, & > label{
+		@include form-maxq($form-mq-h-tablet-wide){
+			margin:0 0 10px 0;
+			display:block;
+		}
+	}
+}
+.choice{
+	display:inline-block;
+	@include form-maxq($form-mq-h-mobile){
+		display:block;
+	}
+	span{
+		margin-right:30px;
+		display:inline-block;
+		@include form-maxq($form-mq-h-mobile){
+			display:block;
+			width:100%;
+			margin:0 0 .5em;
+		}
+		input[type=radio]{
+			position:absolute;
+			left:0;
+			opacity:0;
+			.oldie &{
+				position:relative;
+			}
+		}
+		input[type=radio], input[type=radio]:checked{
+			 & + label{
+				padding:.2em 0 0 2em;
+				position:relative;
+				&:before{
+					content:"";
+					background:image-url("radio.svg") no-repeat;
+					height:20px;
+					width:20px;
+					position:absolute;
+					left:0;
+					top:0;
+				}
+			}
+			&:checked, &:hover{
+				& + label{
+					&:before{
+						background:image-url("radio-checked.svg") no-repeat;
+					}
+				}
+			}
+		}
+	}
+}
+
+/*= CHECKBOX
+==============================================*/
+.type_checkbox{
+	input[type=checkbox]{
+		width:15px;
+		height:15px;
+		& + label{
+			display:inline;
+		}
+	}
+}

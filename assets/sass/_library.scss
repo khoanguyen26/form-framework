@@ -1,0 +1,73 @@
+//////////////////////////////////////////////////////
+// 2013 Royall & Co.
+// Library
+// Author(s):
+//  Khoa Nguyen
+//////////////////////////////////////////////////////
+
+//=  MIN AND MAX MEDIA QUERIES MIXIN
+////////////////////////////////////////
+
+@mixin minq($width:'demension'){
+	@media (min-width:$width){
+		@content;
+	}
+}
+
+@mixin maxq($width:'demension'){
+	@media (max-width:$width){
+		@content;
+	}
+}
+
+// = RESPONSIVE IMAGES
+///////////////////////////////////////
+@mixin responsiveImage($filename, $ext:"png", $size:"empty", $svg-fallback:"png"){
+	background-image: image-url('#{$filename}.#{$ext}');
+ 
+	//for IE 8 and below
+ 
+	@if($ext == "svg"){
+		.oldie &{
+			background-image: image-url('#{$filename}.#{$svg-fallback}');
+		}
+	}@else{
+	// if not svg, show regular media query
+ 
+      @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2),(min-resolution: 192dpi),(min-resolution: 2dppx) { 
+			background-image:image-url("#{$filename}@2x.#{$ext}");
+			@if $size =="empty"{
+				background-size: image-width($filename + "." + $ext) image-height($filename + "." + $ext);
+				}
+			@else{
+				background-size:$size;
+				}
+			}	
+	}
+}
+
+//=  LINKS
+//////////////////////////////////
+
+@mixin link-style($color, $hover, $border:false, $border-hover:false){
+	color:$color;
+	text-decoration:none;
+	@if $border {
+		border-bottom:1px solid $color;
+	}
+
+	&:hover{
+		color:$hover;
+		@if $border-hover {
+			border-color:1px solid $hover;
+		}
+	}
+}
+
+//= MISC
+///////////////////////////////////
+* {
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
